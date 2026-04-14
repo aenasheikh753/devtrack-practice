@@ -10,17 +10,19 @@ export async function GET() {
 }
 
 // 2. POST: Nayi job save karne ke liye
-export async function POST(request) {
+// Yahan humne ': Request' add kiya hai error fix karne ke liye
+export async function POST(request: Request) {
   const { title, company } = await request.json();
   await connectToDatabase();
   const newJob = await Job.create({ title, company });
   return NextResponse.json(newJob);
 }
 
+// 3. DELETE: Job delete karne ke liye
 export async function DELETE(request: Request) {
   try {
     await connectToDatabase();
-    const { id } = await request.json(); // Hum frontend se ID bhejenge
+    const { id } = await request.json(); 
     await Job.findByIdAndDelete(id);
     return NextResponse.json({ message: "Job deleted successfully" }, { status: 200 });
   } catch (error) {
@@ -28,6 +30,7 @@ export async function DELETE(request: Request) {
   }
 }
 
+// 4. PATCH: Status update karne ke liye
 export async function PATCH(request: Request) {
   try {
     await connectToDatabase();

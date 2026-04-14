@@ -5,8 +5,7 @@ import axios from "axios";
 export default function Home() {
   const [title, setTitle] = useState("");
   const [company, setCompany] = useState("");
-  const [jobs, setJobs] = useState([]);
-
+const [jobs, setJobs] = useState<any[]>([]);
   // Database se jobs load karna
   const fetchJobs = async () => {
     const res = await axios.get("/api/jobs");
@@ -27,26 +26,25 @@ export default function Home() {
     fetchJobs(); // List refresh karne ke liye
   };
 
-  const deleteJob = async (id) => {
-    if (confirm("Are you sure you want to delete this?")) {
-      try {
-        await axios.delete("/api/jobs", { data: { id } });
-        fetchJobs(); // List refresh karne ke liye
-      } catch (error) {
-        alert("Error deleting job");
-      }
-    }
-  };
-
-  const updateStatus = async (id, newStatus) => {
+  const deleteJob = async (id: string) => {
+  if (confirm("Are you sure you want to delete this?")) {
     try {
-      await axios.patch("/api/jobs", { id, status: newStatus });
-      fetchJobs(); // UI refresh karne ke liye
+      await axios.delete("/api/jobs", { data: { id } });
+      fetchJobs(); 
     } catch (error) {
-      alert("Update failed");
+      alert("Error deleting job");
     }
-  };
+  }
+};
 
+  const updateStatus = async (id: string, newStatus: string) => {
+  try {
+    await axios.patch("/api/jobs", { id, status: newStatus });
+    fetchJobs(); 
+  } catch (error) {
+    alert("Update failed");
+  }
+};
   return (
     <div className="min-h-screen bg-gray-100 p-8 text-black">
       <div className="max-w-4xl mx-auto">
@@ -95,7 +93,7 @@ export default function Home() {
                   <select
                     value={job.status}
                     onChange={(e) => updateStatus(job._id, e.target.value)}
-                    className="bg-[#334155] text-xs font-bold py-1 px-2 rounded-lg border-none outline-none focus:ring-1 focus:ring-blue-500"
+                    className="bg-pink-100 text-xs font-bold py-1 px-2 rounded-lg border-none outline-none focus:ring-1 focus:ring-blue-500"
                   >
                     <option value="Pending">Pending</option>
                     <option value="Interview">Interview</option>

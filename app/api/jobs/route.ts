@@ -27,3 +27,14 @@ export async function DELETE(request: Request) {
     return NextResponse.json({ error: "Failed to delete job" }, { status: 500 });
   }
 }
+
+export async function PATCH(request: Request) {
+  try {
+    await connectToDatabase();
+    const { id, status } = await request.json();
+    await Job.findByIdAndUpdate(id, { status });
+    return NextResponse.json({ message: "Status updated" });
+  } catch (error) {
+    return NextResponse.json({ error: "Update failed" }, { status: 500 });
+  }
+}

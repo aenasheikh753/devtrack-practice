@@ -27,6 +27,17 @@ export default function Home() {
     fetchJobs(); // List refresh karne ke liye
   };
 
+  const deleteJob = async (id) => {
+  if (confirm("Are you sure you want to delete this?")) {
+    try {
+      await axios.delete("/api/jobs", { data: { id } });
+      fetchJobs(); // List refresh karne ke liye
+    } catch (error) {
+      alert("Error deleting job");
+    }
+  }
+};
+
   return (
     <div className="min-h-screen bg-gray-100 p-8 text-black">
       <div className="max-w-4xl mx-auto">
@@ -65,6 +76,12 @@ export default function Home() {
                   <span className="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm">
                     {job.status}
                   </span>
+                  <button 
+                    onClick={() => deleteJob(job._id)}
+                    className="ml-4 text-red-500 hover:text-red-400 font-medium transition-colors"
+                  >
+                    Delete
+                  </button>
                 </li>
               ))}
             </ul>

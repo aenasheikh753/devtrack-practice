@@ -16,3 +16,14 @@ export async function POST(request) {
   const newJob = await Job.create({ title, company });
   return NextResponse.json(newJob);
 }
+
+export async function DELETE(request: Request) {
+  try {
+    await connectToDatabase();
+    const { id } = await request.json(); // Hum frontend se ID bhejenge
+    await Job.findByIdAndDelete(id);
+    return NextResponse.json({ message: "Job deleted successfully" }, { status: 200 });
+  } catch (error) {
+    return NextResponse.json({ error: "Failed to delete job" }, { status: 500 });
+  }
+}
